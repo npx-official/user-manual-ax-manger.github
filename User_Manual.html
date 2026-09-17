@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axeron Manager - User Manual</title>
+<style>
+  /* ===== المتغيرات اللونية ===== */
+  :root {
+    --bg: #0d1117;
+    --bg-card: #161b22;
+    --bg-code: #1f242c;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --primary: #58a6ff;
+    --primary-dark: #1f6feb;
+    --success: #3fb950;
+    --warning: #d29922;
+    --danger: #f85149;
+    --purple: #bc8cff;
+    --pink: #ff7b72;
+    --cyan: #39d353;
+    --border: #30363d;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  }
+
+  /* ===== الوضع الفاتح ===== */
+  body.light-mode {
+    --bg: #f6f8fa;
+    --bg-card: #ffffff;
+    --bg-code: #f0f3f6;
+    --text: #24292f;
+    --text-muted: #57606a;
+    --primary: #0969da;
+    --primary-dark: #0550ae;
+    --border: #d0d7de;
+    --shadow: rgba(0, 0, 0, 0.1);
+  }
+
+  * { box-sizing: border-box; transition: background 0.3s, color 0.3s; }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    line-height: 1.85;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    min-height: 100vh;
+  }
+
+  /* ===== دعم RTL / LTR ===== */
+  html[dir="rtl"] body { text-align: right; }
+  html[dir="ltr"] body { text-align: left; }
+
+  /* ===== العنوان الرئيسي ===== */
+  h1 {
+    background: var(--gradient-1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.8rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 1rem;
+  }
+
+  h1::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 4px;
+    margin: 1rem auto 0;
+    background: var(--gradient-2);
+    border-radius: 2px;
+  }
+
+  h2 {
+    background: var(--gradient-3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.8rem;
+    margin-top: 2.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  h3 {
+    color: var(--primary);
+    font-size: 1.35rem;
+    margin-top: 1.8rem;
+    padding-inline-start: 12px;
+    border-inline-start: 4px solid var(--primary);
+  }
+
+  /* ===== الروابط ===== */
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--primary);
+    transition: all 0.2s;
+  }
+  a:hover { color: var(--pink); border-bottom-color: var(--pink); }
+
+  /* ===== الأكواد ===== */
+  code {
+    background: var(--bg-code);
+    color: var(--cyan);
+    padding: 0.2em 0.5em;
+    border-radius: 6px;
+    font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 0.88em;
+    border: 1px solid var(--border);
+    direction: ltr;
+    display: inline-block;
+  }
+
+  pre {
+    background: var(--bg-code);
+    padding: 1.2rem;
+    border-radius: 10px;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-inline-start: 4px solid var(--cyan);
+    color: var(--text);
+    box-shadow: 0 4px 12px var(--shadow);
+    direction: ltr;
+    text-align: left;
+  }
+
+  pre code { background: none; border: none; padding: 0; }
+
+  /* ===== صناديق التنبيه ===== */
+  blockquote {
+    border-inline-start: 5px solid var(--primary);
+    background: linear-gradient(90deg, rgba(88, 166, 255, 0.15), transparent);
+    padding: 1rem 1.3rem;
+    margin: 1.2rem 0;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  html[dir="rtl"] blockquote { border-radius: 10px 0 0 10px; }
+  blockquote p { margin: 0.3rem 0; }
+
+  .info-box { border-inline-start-color: var(--primary); background: linear-gradient(90deg, rgba(88, 166, 255, 0.18), transparent); }
+  .info-box strong:first-child { color: var(--primary); }
+
+  .tip-box { border-inline-start-color: var(--success); background: linear-gradient(90deg, rgba(63, 185, 80, 0.18), transparent); }
+  .tip-box strong:first-child { color: var(--success); }
+
+  .warning-box { border-inline-start-color: var(--warning); background: linear-gradient(90deg, rgba(210, 153, 34, 0.18), transparent); }
+  .warning-box strong:first-child { color: var(--warning); }
+
+  /* ===== القوائم ===== */
+  ol, ul { padding-inline-start: 1.6rem; }
+  li { margin: 0.5rem 0; }
+  ol li::marker { color: var(--primary); font-weight: bold; }
+  ul li::marker { color: var(--pink); }
+
+  /* ===== جدول المحتويات ===== */
+  .toc {
+    background: var(--bg-card);
+    padding: 1.3rem 1.8rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 16px var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .toc::before {
+    content: "";
+    position: absolute;
+    top: 0; inset-inline-start: 0;
+    width: 6px; height: 100%;
+    background: var(--gradient-1);
+  }
+
+  .toc strong {
+    color: var(--purple);
+    font-size: 1.15rem;
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  .toc ul { margin: 0.3rem 0; list-style: none; padding-inline-start: 0; }
+
+  .toc a {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .toc a:hover {
+    background: rgba(88, 166, 255, 0.15);
+    border-color: var(--primary);
+    transform: translateX(5px);
+  }
+  html[dir="rtl"] .toc a:hover { transform: translateX(-5px); }
+
+  /* ===== الفاصل ===== */
+  hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 2.5rem 0;
+  }
+
+  /* ===== أزرار التحكم ===== */
+  .controls {
+    position: fixed;
+    top: 20px;
+    inset-inline-end: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: var(--bg-card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.6rem 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px var(--shadow);
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn:hover {
+    background: var(--primary);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--shadow);
+  }
+
+  .btn.lang-btn {
+    background: var(--gradient-1);
+    color: #fff;
+    border: none;
+  }
+
+  /* ===== شريط التقدم ===== */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    inset-inline-start: 0;
+    height: 4px;
+    background: var(--gradient-2);
+    width: 0%;
+    z-index: 999;
+    transition: width 0.1s;
+  }
+
+  /* ===== تمييز الكلمات ===== */
+  strong { color: var(--purple); }
+  em { color: var(--warning); font-style: normal; }
+
+  /* ===== إخفاء/إظهار اللغات ===== */
+  [data-lang] { display: none; }
+  [data-lang].active { display: block; }
+  [data-lang].active-inline { display: inline; }
+
+  /* ===== التجاوب ===== */
+  @media (max-width: 600px) {
+    body { padding: 1.2rem 1rem; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 1.15rem; }
+    .controls { top: 10px; inset-inline-end: 10px; gap: 6px; }
+    .btn { padding: 0.5rem 0.8rem; font-size: 0.9rem; }
+  }
+
+  /* ===== حركات الظهور ===== */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  section, .toc { animation: fadeInUp 0.6s ease-out; }
+</style>
+</head>
+<body>
+
+<!-- شريط التقدم -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- أزرار التحكم -->
+<div class="controls">
+  <button class="btn lang-btn" id="langToggle" title="Change Language">
+    🌐 <span id="langLabel">EN</span>
+  </button>
+  <button class="btn" id="themeToggle" title="Theme">🌙</button>
+  <button class="btn" id="topBtn" title="Top">⬆️</button>
+</div>
+
+<!-- ============================================ -->
+<!-- ================ ARABIC VERSION ============ -->
+<!-- ============================================ -->
+<div data-lang="ar" class="active">
+
+  <h1>دليل المستخدم — Axeron Manager</h1>
+
+  <div class="toc">
+    <strong>📑 المحتويات</strong>
+    <ul>
+      <li><a href="#ar-start-root">🔓 البدء بصلاحيات الروت</a></li>
+      <li><a href="#ar-start-wireless">📡 البدء عبر التصحيح اللاسلكي</a></li>
+      <li><a href="#ar-start-computer">💻 البدء عبر الاتصال بالكمبيوتر</a></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- ===== Start with Root ===== -->
+  <section id="ar-start-root">
+    <h2>🔓 البدء بصلاحيات الروت</h2>
+    <blockquote class="info-box">
+      <p><strong>معلومة</strong></p>
+      <p>في الوقت الحالي يمكنك فقط تشغيل وضع الروت باستخدام الأوامر.</p>
+    </blockquote>
+  </section>
+
+  <hr>
+
+  <!-- ===== Wireless Debugging ===== -->
+  <section id="ar-start-wireless">
+    <h2>📡 البدء عبر التصحيح اللاسلكي</h2>
+
+    <p>يعمل البدء عبر التصحيح اللاسلكي على <strong>أندرويد 11 أو أحدث</strong>. لا تتطلب طريقة التشغيل هذه الاتصال بالكمبيوتر. بسبب قيود النظام، يجب تكرار خطوات التشغيل بعد كل إعادة تشغيل للجهاز.</p>
+
+    <h3>تفعيل التصحيح اللاسلكي</h3>
+    <ol>
+      <li>ابحث عن طريقة تفعيل <em>"خيارات المطور"</em> الخاصة بطراز جهازك.</li>
+      <li>فعّل <em>"خيارات المطور"</em> و <em>"تصحيح USB"</em>.</li>
+      <li>ادخل إلى <em>"التصحيح اللاسلكي"</em>.</li>
+      <li>فعّل <em>"التصحيح اللاسلكي"</em>.</li>
+    </ol>
+
+    <h3>البدء والاقتران (مرة واحدة فقط)</h3>
+    <ol>
+      <li>ابدأ في <strong>AxManager</strong>.</li>
+      <li>فعّل <em>"التصحيح اللاسلكي"</em>.</li>
+      <li>اضغط على <strong>"إقران الجهاز باستخدام رمز الإقران"</strong> داخل <em>"التصحيح اللاسلكي"</em>.</li>
+      <li>أدخل رمز الإقران في إشعار AxManager حتى تظهر رسالة <strong>"تم الاقتران بنجاح"</strong>.</li>
+      <li>ارجع إلى AxManager وانتظر حتى يتم الاتصال.
+        <blockquote class="warning-box">
+          <p>⚠️ في بعض الأجهزة تحتاج إلى الضغط على <strong>"بدء"</strong> مرة أخرى.</p>
+        </blockquote>
+      </li>
+    </ol>
+  </section>
+
+  <hr>
+
+  <!-- ===== Connect to Computer ===== -->
+  <section id="ar-start-computer">
+    <h2>💻 البدء عبر الاتصال بالكمبيوتر</h2>
+
+    <p>تعمل طريقة التشغيل هذه على <strong>الأجهزة غير المُروّتة التي تعمل بنظام أندرويد 10 أو أقدم</strong>. للأسف، تتطلب طريقة التشغيل هذه وجود كمبيوتر. بسبب قيود النظام، يجب تكرار خطوات التشغيل بعد كل إعادة تشغيل للجهاز.</p>
+
+    <h3>ما هو adb؟</h3>
+
+    <p><strong>جسر تصحيح أندرويد (adb)</strong> هو أداة سطر أوامر متعددة الاستخدامات تتيح لك التواصل مع الجهاز. يسهّل أمر adb مجموعة متنوعة من إجراءات الجهاز، مثل تثبيت التطبيقات وتصحيحها، كما يوفر الوصول إلى صدفة Unix يمكنك استخدامها لتشغيل مجموعة متنوعة من الأوامر على الجهاز.</p>
+
+    <p>راجع <a href="https://developer.android.com/studio/command-line/adb" target="_blank" rel="noopener">مطوري أندرويد</a> لمزيد من المعلومات.</p>
+
+    <h3>تثبيت adb</h3>
+    <ol>
+      <li>قم بتنزيل <strong>"أدوات منصة SDK"</strong> المقدمة من Google واستخرجها إلى أي مجلد:
+        <ul>
+          <li><a href="https://developer.android.com/studio/releases/platform-tools" target="_blank" rel="noopener">🪟 ويندوز</a></li>
+          <li><a href="https://developer.android.com/studio/releases/platform-tools" target="_blank" rel="noopener">🐧 لينكس</a></li>
+          <li><a href="https://developer.android.com/studio/releases/platform-tools" target="_blank" rel="noopener">🍎 ماك</a></li>
+        </ul>
+      </li>
+      <li>افتح المجلد، وانقر بزر الفأرة الأيمن لتحديد:
+        <ul>
+          <li><strong>ويندوز 10:</strong> فتح نافذة PowerShell هنا (اضغط باستمرار على <code>Shift</code> لإظهار هذا الخيار)</li>
+          <li><strong>ويندوز 7:</strong> فتح نافذة الأوامر هنا (اضغط باستمرار على <code>Shift</code> لإظهار هذا الخيار)</li>
+          <li><strong>ماك أو لينكس:</strong> افتح الطرفية (Terminal)</li>
+        </ul>
+      </li>
+      <li>اكتب <code>adb</code>. إذا نجحت العملية، سترى قائمة طويلة من المحتوى بدلاً من رسالة <em>"لم يتم العثور على adb"</em>.</li>
+    </ol>
+
+    <blockquote class="tip-box">
+      <p><strong>💡 نصيحة</strong></p>
+      <p>الرجاء عدم إغلاق هذه النافذة. تشير كلمة "الطرفية" المذكورة لاحقاً إلى هذه النافذة (إذا أغلقت النافذة، يرجى العودة إلى الخطوة 2). إذا كنت تستخدم PowerShell أو Linux/Mac، فيجب استبدال كل <code>adb</code> بـ <code>./adb</code>.</p>
+    </blockquote>
+
+    <h3>إعداد adb</h3>
+
+    <p>لاستخدام adb، تحتاج أولاً إلى تفعيل <strong>تصحيح USB</strong> على جهازك، عادةً باتباع الخطوات التالية:</p>
+    <ol>
+      <li>ابحث عن طريقة تفعيل <em>"خيارات المطور"</em> الخاصة بطراز جهازك.</li>
+      <li>فعّل <em>"خيارات المطور"</em> و <em>"تصحيح USB"</em>.</li>
+      <li>قم بتوصيل الجهاز بالكمبيوتر واكتب <code>adb devices</code> في الطرفية.</li>
+      <li>في هذه اللحظة، سيظهر مربع حوار <strong>"السماح بالتصحيح"</strong> على الجهاز. حدد <strong>"السماح دائماً"</strong> وأكّد.</li>
+      <li>اكتب <code>adb devices</code> مرة أخرى في الطرفية. إذا لم تكن هناك مشكلة، سترى شيئاً مثل ما يلي:
+        <pre><code>List of devices attached
+XXX     device</code></pre>
+      </li>
+    </ol>
+
+    <h3>بدء AxManager</h3>
+
+    <blockquote class="tip-box">
+      <p>انسخ الأمر والصقه في الطرفية. إذا لم تكن هناك مشكلة، سترى أن <strong>AxManager قد بدأ بنجاح</strong> في تطبيق AxManager. ✅</p>
+    </blockquote>
+  </section>
+
+</div>
+
+<!-- ============================================ -->
+<!-- =============== ENGLISH VERSION ============ -->
+<!-- ============================================ -->
+<div data-lang="en">
+
+  <h1>Axeron Manager — User Manual</h1>
+
+  <div class="toc">
+    <strong>📑 Contents</strong>
+    <ul>
+      <li><a href="#en-start-root">🔓 Start with Root</a></li>
+      <li><a href="#en-start-wireless">📡 Start with Wireless Debugging</a></li>
+      <li><a href="#en-start-computer">💻 Start by connecting to a computer</a></li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- ===== Start with Root ===== -->
+  <section id="en-start-root">
+    <h2>🔓 Start with Root</h2>
+    <blockquote class="info-box">
+      <p><strong>INFO</strong></p>
+      <p>For now you can only start root mode using commands.</p>
+    </blockquote>
+  </section>
+
+  <hr>
+
+  <!-- ===== Wireless Debugging ===== -->
+  <section id="en-start-wireless">
+    <h2>📡 Start with Wireless Debugging</h2>
+
+    <p>Starting with wireless debugging works on <strong>Android 11 or above</strong>. This startup method does not require a connection to a computer. Due to system limitations, the startup steps need to be performed again after each reboot.</p>
+
+    <h3>Enable Wireless Debugging</h3>
+    <ol>
+      <li>Search how to enable <em>"Developer Options"</em> for your device model.</li>
+      <li>Enable <em>"Developer Options"</em> and <em>"USB Debugging"</em>.</li>
+      <li>Enter <em>"Wireless Debugging"</em>.</li>
+      <li>Enable <em>"Wireless Debugging"</em>.</li>
+    </ol>
+
+    <h3>Start &amp; Pairing (only needs once)</h3>
+    <ol>
+      <li>Start in <strong>AxManager</strong>.</li>
+      <li>Enable <em>"Wireless Debugging"</em>.</li>
+      <li>Tap <strong>"Pair device with pairing code"</strong> in <em>"Wireless Debugging"</em>.</li>
+      <li>Enter pairing code in AxManager's notification until <strong>"Pairing successfully"</strong>.</li>
+      <li>Back to AxManager and wait until connected.
+        <blockquote class="warning-box">
+          <p>⚠️ On some devices you need to click <strong>"Start"</strong> again.</p>
+        </blockquote>
+      </li>
+    </ol>
+  </section>
+
+  <hr>
+
+  <!-- ===== Connect to Computer ===== -->
+  <section id="en-start-computer">
+    <h2>💻 Start by connecting to a computer</h2>
+
+    <p>This boot method works on <strong>unrooted devices running Android 10 and below</strong>. Unfortunately, this startup method requires a computer. Due to system limitations, the boot steps need to be performed again after each reboot.</p>
+
+    <h3>What is adb?</h3>
+
+    <p><strong>Android Debug Bridge (adb)</strong> is a versatile command-line tool that lets you communicate with a device. The adb command facilitates a variety of device actions, such as installing and debugging apps, and it provides access to a Unix shell that you can use to run a variety of commands on a device.</p>
+
+    <p>See <a href="https://developer.android.com/studio/command-line/adb" target="_blank" rel="noopener">Android Developer</a> for more information.</p>
+
+    <h3>Install adb</h3>
+    <ol>
+      <li>Download <strong>"SDK Platform Tools"</strong> provided by Google and extract it to any folder:
+        <ul>
+          <li><a href="https://developer.android.com/studio/releases/platform-tools" target="_blank" rel="noopener">🪟 Windows</a></li>
+          <li><a href="https://developer.android.com/studio/releases/platform-tools" target="_blank" rel="noopener">🐧 Linux</a></li>
+          <li><a href="https://developer.android.com/studio/releases/platform-tools" target="_blank" rel="noopener">🍎 Mac</a></li>
+        </ul>
+      </li>
+      <li>Open the folder, right-click to select:
+        <ul>
+          <li><strong>Windows 10:</strong> Open PowerShell window here (hold down <code>Shift</code> to show this option)</li>
+          <li><strong>Windows 7:</strong> Open command window here (hold down <code>Shift</code> to show this option)</li>
+          <li><strong>Mac or Linux:</strong> Open Terminal</li>
+        </ul>
+      </li>
+      <li>Enter <code>adb</code>. If successful, you can see a long list of content instead of the prompt <em>"not finding adb"</em>.</li>
+    </ol>
+
+    <blockquote class="tip-box">
+      <p><strong>💡 TIP</strong></p>
+      <p>Please do not close this window. The "terminal" mentioned later refers to this window (if you closed the window, please go back to step 2). If you use PowerShell or Linux/Mac, all <code>adb</code> should be replaced with <code>./adb</code>.</p>
+    </blockquote>
+
+    <h3>Setting adb</h3>
+
+    <p>To use adb you first need to turn on <strong>USB debugging</strong> on your device, usually by following these steps:</p>
+    <ol>
+      <li>Search how to enable <em>"Developer Options"</em> for your device model.</li>
+      <li>Enable <em>"Developer Options"</em> and <em>"USB Debugging"</em>.</li>
+      <li>Connect the device to the computer and type <code>adb devices</code> in the terminal.</li>
+      <li>At this time, the dialog <strong>"Allow debugging"</strong> will appear on the device. Check <strong>"Always allow"</strong> and confirm.</li>
+      <li>Enter <code>adb devices</code> again in the terminal. If there is no problem, you will see something like the following:
+        <pre><code>List of devices attached
+XXX     device</code></pre>
+      </li>
+    </ol>
+
+    <h3>Start AxManager</h3>
+
+    <blockquote class="tip-box">
+      <p>Copy the command and paste it into the terminal. If there is no problem, you will see that <strong>AxManager has started successfully</strong> in the AxManager app. ✅</p>
+    </blockquote>
+  </section>
+
+</div>
+
+<script>
+  // ===== تبديل اللغة =====
+  const langToggle = document.getElementById('langToggle');
+  const langLabel = document.getElementById('langLabel');
+  const html = document.documentElement;
+
+  function setLanguage(lang) {
+    // إخفاء جميع اللغات
+    document.querySelectorAll('[data-lang]').forEach(el => el.classList.remove('active'));
+    // إظهار اللغة المختارة
+    document.querySelector(`[data-lang="${lang}"]`).classList.add('active');
+
+    // تغيير الاتجاه واللغة
+    if (lang === 'ar') {
+      html.setAttribute('lang', 'ar');
+      html.setAttribute('dir', 'rtl');
+      langLabel.textContent = 'EN';
+      langToggle.title = 'Switch to English';
+    } else {
+      html.setAttribute('lang', 'en');
+      html.setAttribute('dir', 'ltr');
+      langLabel.textContent = 'ع';
+      langToggle.title = 'التبديل إلى العربية';
+    }
+
+    localStorage.setItem('lang', lang);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  langToggle.addEventListener('click', () => {
+    const current = html.getAttribute('lang');
+    setLanguage(current === 'ar' ? 'en' : 'ar');
+  });
+
+  // تحميل اللغة المحفوظة
+  const savedLang = localStorage.getItem('lang') || 'ar';
+  setLanguage(savedLang);
+
+  // ===== تبديل الوضع الليلي/النهاري =====
+  const themeToggle = document.getElementById('themeToggle');
+  const body = document.body;
+
+  if (localStorage.getItem('theme') === 'light') {
+    body.classList.add('light-mode');
+    themeToggle.textContent = '☀️';
+  }
+
+  themeToggle.addEventListener('click', () => {
+    body.classList.toggle('light-mode');
+    const isLight = body.classList.contains('light-mode');
+    themeToggle.textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  });
+
+  // ===== زر العودة للأعلى =====
+  document.getElementById('topBtn').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ===== شريط التقدم =====
+  const progressBar = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+  });
+
+  // ===== تمرير سلس للروابط =====
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+</body>
+</html>
